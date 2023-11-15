@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.16"
+        classpath "com.google.cloud.tools:appengine-gradle-plugin:2.4.5"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.google.cloud.tools.appengine'
+
+group = 'com.project'
+version = '1.0'
+//sourceCompatibility = JavaVersion.VERSION_1_8
+//targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+wrapper {
+    gradleVersion = '7.2' //run 'gradlew wrapper' after updating
+}
+
+jar {
+    enabled = false //Don't generate flexible-last-modified-1.0-plain.jar
+    archiveClassifier.set('') //Deploy fat jar instead of default plain jar
+}
+
+appengine {
+    deploy {
+        projectId = 'project-id'
+        version = 'GCLOUD_CONFIG'
+        promote = false
+        stopPreviousVersion = false
+    }
+}
